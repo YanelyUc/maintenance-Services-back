@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_01_03_234247) do
+ActiveRecord::Schema.define(version: 2025_01_04_020731) do
 
   create_table "cars", force: :cascade do |t|
     t.string "plate_number"
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2025_01_03_234247) do
     t.integer "year"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "active", default: true
   end
 
   create_table "mantenance_services", force: :cascade do |t|
