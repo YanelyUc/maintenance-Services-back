@@ -5,7 +5,7 @@ module Api
 
       # GET /maintenance_services
       def index
-        @maintenance_services = MaintenanceService.all
+        @maintenance_services = MaintenanceService.active
 
         render json: @maintenance_services
       end

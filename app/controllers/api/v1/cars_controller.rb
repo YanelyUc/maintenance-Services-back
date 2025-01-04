@@ -5,7 +5,7 @@ module Api
 
       # GET /cars
       def index
-        @cars = Car.all
+        @cars = Car.active
 
         render json: @cars
       end
@@ -37,10 +37,16 @@ module Api
 
       # DELETE /cars/1
       def destroy
-        if @car.update(active: false)
-          render status: :ok
-        else
-          render json: @car.errors, status: :unprocessable_entity
+        ActiveRecord::Base.transaction do
+          @car.active_maintenance_services.map do |maintenance_service|
+            maintenance_service.update(active: false)
+          end
+
+          if @car.update(active: false)
+            render status: :ok
+          else
+            render json: @car.errors, status: :unprocessable_entity
+          end
         end
       end
 
