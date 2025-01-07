@@ -44,7 +44,7 @@ module Api
         return error_response("The car with id '#{params[:id]}' doesn't exists", :not_found) if @car.nil?
 
         if @car.update(car_params)
-          render json: @car
+          render json: @car.reload
         else
           error_response(@car.errors.full_messages.join(', '), :unprocessable_entity)
         end
@@ -71,12 +71,12 @@ module Api
 
       # Use callbacks to share common setup or constraints between actions.
       def set_car
-        @car = Car.find_by(id: params[:id])
+        @car = Car.includes(:maintenance_services).find_by(id: params[:id])
       end
 
       # Only allow a list of trusted parameters through.
       def car_params
-        params.permit(:plate_number, :model, :year, :filter_status)
+        params.permit(:id, :plate_number, :model, :year, :filter_status, :active)
       end
     end
   end
